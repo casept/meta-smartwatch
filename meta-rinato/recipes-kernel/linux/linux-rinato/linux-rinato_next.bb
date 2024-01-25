@@ -29,5 +29,3 @@ B = "${S}"
 do_compile:append() {
         cat "${KERNEL_OUTPUT_DIR}/dts/${KERNEL_DEVICETREE}" >> "${KERNEL_OUTPUT_DIR}/${KERNEL_IMAGETYPE}"
 }
-
-# FIXME: Install modules into properly-named directory, as kernel currently refuses to load them
