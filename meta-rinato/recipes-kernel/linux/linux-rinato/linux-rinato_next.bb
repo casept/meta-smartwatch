@@ -12,14 +12,15 @@ COMPATIBLE_MACHINE = "rinato"
 
 SRC_URI = " \
     git://git@github.com/casept/linux-samsung-smartwatch.git;protocol=https;branch=rinato \
-    file://defconfig \
 "
 SRC_URI[sha256sum] = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
 
-SRCREV = "cadac5d99c5a450481fa270bb9e6cf4e2f2134b5"
+SRCREV = "a9ed2839f8a3a80112c581af2ef6603e7cd7bff3"
 
 LINUX_VERSION ?= "next"
 KERNEL_VERSION_SANITY_SKIP="1"
+
+KBUILD_DEFCONFIG:rinato ?= "rinato_debug_defconfig"
 
 PV = "${LINUX_VERSION}"
 S = "${WORKDIR}/git"
