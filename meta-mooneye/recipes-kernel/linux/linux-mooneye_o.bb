@@ -11,6 +11,8 @@ COMPATIBLE_MACHINE = "mooneye"
 # Use an older version of gcc (gcc >= 9 doesn't boot.)
 DEPENDS:remove = "virtual/${TARGET_PREFIX}gcc"
 DEPENDS += "virtual/${TARGET_PREFIX}gcc8"
+# Ancient GCC doesn't support this flag
+DEBUG_PREFIX_MAP:remove = "-fcanon-prefix-map"
 
 SRC_URI = "git://android.googlesource.com/kernel/mediatek;branch=android-mediatek-mooneye-4.4-oreo-wear-dr;protocol=https \
     file://0001-Fix-various-drivers-compilation-with-a-recent-GCC.patch \
