@@ -11,6 +11,8 @@ COMPATIBLE_MACHINE = "tetra"
 # Use an older version of gcc (gcc >= 9 doesn't boot.)
 DEPENDS:remove = "virtual/${TARGET_PREFIX}gcc"
 DEPENDS += "virtual/${TARGET_PREFIX}gcc8"
+# Ancient GCC doesn't support this flag
+DEBUG_PREFIX_MAP:remove = "-fcanon-prefix-map"
 
 SRC_URI = "git://android.googlesource.com/kernel/bcm;branch=android-bcm-tetra-3.10-marshmallow-dr1-wear-release;protocol=https \
     file://defconfig \
