@@ -1,7 +1,4 @@
-inherit kernel
-# Including this causes a super weird error:
-# | /tmp/ccDg8okE.s:4834: Error: selected processor does not support requested special purpose register -- `mrs r2,cpsr'
-#require recipes-kernel/linux/linux-yocto.inc
+require recipes-kernel/linux/linux-yocto.inc
 
 SECTION = "kernel"
 SUMMARY = "linux-next with patches for Samsung smartwatches"
@@ -15,18 +12,23 @@ SRC_URI = " \
 "
 SRC_URI[sha256sum] = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
 
-SRCREV = "a9ed2839f8a3a80112c581af2ef6603e7cd7bff3"
+SRCREV = "cdce41c4a6c6fd71eaa067d97115e8450dae81dc"
 
-LINUX_VERSION ?= "next"
-KERNEL_VERSION_SANITY_SKIP="1"
-
-KBUILD_DEFCONFIG:rinato ?= "rinato_debug_defconfig"
+LINUX_VERSION ?= "6.10-rc5"
 
 PV = "${LINUX_VERSION}"
 S = "${WORKDIR}/git"
 B = "${S}"
 
-# S-Boot is too old for dtree support, have to use concatenated device tree
-do_compile:append() {
-        cat "${KERNEL_OUTPUT_DIR}/dts/${KERNEL_DEVICETREE}" >> "${KERNEL_OUTPUT_DIR}/${KERNEL_IMAGETYPE}"
+KBUILD_DEFCONFIG:rinato ?= "rinato_debug_defconfig"
+KCONFIG_MODE = "alldefconfig"
+KERNEL_IMAGETYPE = "zImage"
+KERNEL_ARTIFACT_NAME = "zImage"
+
+# For some reason, the kernel artifact gets a weird name that Yocto itself doesn't recognize
+do_install:append() {
+        cp "${D}/${KERNEL_IMAGEDEST}/zImage-6.10.0-rc5-next-20240627-yocto-standard-gcdce41c4a6c6" "${D}/${KERNEL_IMAGEDEST}/zImage"
 }
+
+KERNEL_DEVICETREE = "samsung/exynos3250-rinato.dtb"
+KERNEL_DEVICETREE_BUNDLE = "1"
