@@ -1,7 +1,4 @@
 inherit kernel
-# Including this causes a super weird error:
-# | /tmp/ccDg8okE.s:4834: Error: selected processor does not support requested special purpose register -- `mrs r2,cpsr'
-#require recipes-kernel/linux/linux-yocto.inc
 
 SECTION = "kernel"
 SUMMARY = "linux-next with patches for Samsung smartwatches"
@@ -15,16 +12,20 @@ SRC_URI = " \
 "
 SRC_URI[sha256sum] = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
 
-SRCREV = "4a4884c475ff33129e7ff2ddd6dbc9a864049db7"
+SRCREV = "df0a781e7e4e72d55d70f6b6231510097bd26f22"
 
 LINUX_VERSION ?= "next"
 KERNEL_VERSION_SANITY_SKIP="1"
 
-KBUILD_DEFCONFIG:rinato ?= "rinato_debug_defconfig"
-
 PV = "${LINUX_VERSION}"
 S = "${WORKDIR}/git"
 B = "${S}"
+
+# Just do it by hand, to be 1000% sure the right config is used here.
+# Tried to do it with kernel-yocto.bbclass magic, ended up wasting 5 hours debugging.
+do_configure() {
+		make ARCH=arm rinato_debug_defconfig
+}
 
 # S-Boot is too old for dtree support, have to use concatenated device tree
 do_compile:append() {
